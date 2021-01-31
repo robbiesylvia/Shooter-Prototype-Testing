@@ -1,5 +1,8 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
@@ -8,7 +11,7 @@ import frc.robot.Constants;
 
     
 public class ShooterCommand extends CommandBase {
-    public final Shooter shooter;
+  public final Shooter shooter;
     public long startTime;
 
     public ShooterCommand(Shooter shooter) {
@@ -24,7 +27,7 @@ public class ShooterCommand extends CommandBase {
   
     @Override
     public void execute() { 
-      shooter.firstMotor.setVoltage(Constants.targetVoltage);
+      shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
       /* Constants.timesExecuted += 1;
       shooter.setVoltage();
       double firstError = shooter.firstRPM - (shooter.firstEncoder.getRate() * 60);
@@ -46,7 +49,7 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
       //System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
-      shooter.firstMotor.setVoltage(0);
+      shooter.firstMotor.set(ControlMode.PercentOutput, 0);
     }
   
     @Override

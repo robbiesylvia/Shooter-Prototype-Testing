@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 //manually change the targetVoltage in Constants.java
 
 public class Shooter extends SubsystemBase {
-    public Talon firstMotor = new Talon(Constants.talonFirstChannel);
-    public Talon secondMotor = new Talon(Constants.talonSecondChannel);
+    public TalonFX firstMotor = new TalonFX(Constants.talonFirstChannel);
+    public TalonFX secondMotor = new TalonFX(Constants.talonSecondChannel);
 
     public double firstRPM = 200;
     public double firstCurrentVoltage;
@@ -32,9 +32,10 @@ public class Shooter extends SubsystemBase {
       secondEncoder.setMinRate(10);
       secondEncoder.setSamplesToAverage(5);
   }
-  //sets voltage of each motor, switched to voltage from RPM for simplicity
+}
+  /* sets voltage of each motor, switched to voltage from RPM for simplicity
   public void setVoltage() {
       firstMotor.setVoltage(firstCurrentVoltage);
       secondMotor.setVoltage(secondCurrentVoltage);
     }
-}
+}*/

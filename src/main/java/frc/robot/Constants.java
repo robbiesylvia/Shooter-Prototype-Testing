@@ -21,6 +21,5 @@ public final class Constants {
     public static int secondEncoderPort2 = 3;
     public static double kP = 0.001;
     public static int timesExecuted = 0;
-    public static double targetVoltage = 6;
     //change targetVoltage manually for testing
 }
