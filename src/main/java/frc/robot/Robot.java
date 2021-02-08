@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,8 +20,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  
+  TalonFX talonFX = new TalonFX(1);
+  Joystick joystick = new Joystick(0);
   private RobotContainer m_robotContainer;
+  
+    /* String for output */
+    StringBuilder stringBuilder = new StringBuilder();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -27,7 +36,15 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    
     m_robotContainer = new RobotContainer();
+      /* Factory Default all hardware to prevent unexpected behaviour */
+		talonFX.configFactoryDefault();
+		
+		/* Config neutral deadband to be the smallest possible */
+		talonFX.configNeutralDeadband(0.001);
+    talonFX.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+      talonFX.config_kP(Constants.kPIDLoopIdx, Constants.kP, Constants.kTimeoutMs);
   }
 
   /**
@@ -81,8 +98,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
-
+ public void teleopPeriodic() {}
+ 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.

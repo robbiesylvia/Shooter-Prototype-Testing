@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
@@ -27,8 +25,9 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void execute() { 
       shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
-      double encoderRate = Shooter.firstEncoder.getRate();
-        System.out.println(encoderRate);
+      //double encoderRate = Shooter.getRate();
+     // System.out.println(encoderRate);
+      
       /* Constants.timesExecuted += 1;
       shooter.setVoltage();
       double firstError = shooter.firstRPM - (shooter.firstEncoder.getRate() * 60);
@@ -55,10 +54,10 @@ public class ShooterCommand extends CommandBase {
   
     @Override
     public boolean isFinished() {
-      if(Shooter.isFirstRPMGood && Shooter.isSecondRPMGood){
+      /*if(Shooter.isFirstRPMGood && Shooter.isSecondRPMGood){
         return true;
       }else{
+        return false;*/
         return false;
-      }
     }
   }
