@@ -5,28 +5,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 //manually change the targetVoltage in Constants.java
 
 public class Shooter extends SubsystemBase {
 
-  public TalonFX firstMotor = new TalonFX(Constants.talonFirstChannel);
+  public TalonSRX firstMotor = new TalonSRX(Constants.talonFirstChannel);
   double currentSensorVelocity;
   double currentRPM;
   double currentPercentOutput = 0.5;
-
-   public double getVelocityError (TalonFX talonFX, double targetPercentOutput) {
-    currentSensorVelocity = talonFX.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
+  public double getVelocityError (TalonSRX talonSRX, double targetPercentOutput) {
+    currentSensorVelocity = talonSRX.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
     currentRPM = (currentSensorVelocity * 10 * 60)/2048;
-    // converts to RPM, 100 ms * 10 = 1 second, * 60 = 1 minute, /2048 because 2048 pulses/revolution
-    double errorRPM = targetPercentOutput - currentRPM;
-    return errorRPM; 
+    currentPercentOutput = currentRPM / 6380;
+    // converts to RPM, 100 ms * 10 = 1 second, * 60 = 1 minute, /2048 because 2048 pulses/revolution and 6380 RPM is approx. max output (does not have to be exact)
+    double errorPercentOutput = targetPercentOutput - currentPercentOutput;
+    return errorPercentOutput; 
    }
 
-   public void PIDControl (TalonFX talonFX, double targetPercentOutput) {
-     double errorRPM = getVelocityError(talonFX, targetPercentOutput);
-    double gainsPercentOutput = (errorRPM / 6380) * Constants.kP;
+   public void PIDControl (TalonSRX talonSRX, double targetPercentOutput) {
+     double errorRPM = getVelocityError(talonSRX, targetPercentOutput);
+    double gainsPercentOutput = (errorRPM) * Constants.kP;
     double newPercentOutput = currentPercentOutput + gainsPercentOutput;
     //failsafe
     if (newPercentOutput > 1 || newPercentOutput < -1) {
@@ -36,7 +36,7 @@ public class Shooter extends SubsystemBase {
     firstMotor.set(ControlMode.PercentOutput, newPercentOutput);
     currentPercentOutput = newPercentOutput; 
     }
-    System.out.println();
+    System.out.println("Current percent output =" + currentPercentOutput);
    } 
  }  // WPI_TalonFX --- helpful for velocity control etc.? ,..... also be aware of phoenix code, they say 2000 but use 500 for dimensional analysis of velocity stuff
 

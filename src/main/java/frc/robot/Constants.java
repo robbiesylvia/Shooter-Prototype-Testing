@@ -20,6 +20,7 @@ public final class Constants {
     public static int secondEncoderPort1 = 2;
     public static int secondEncoderPort2 = 3;
     public static int timesExecuted = 0;
+	public static double kP = 1; //kP will be directly applied to the PERCENT OUTPUT of motor
     //change targetVoltage manually for testing
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
@@ -40,10 +41,9 @@ public final class Constants {
 	 */
     public static final int kTimeoutMs = 30;
 
+}
 	/**
 	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
      * kF: 1023 represents output value to Talon at 100%, 20660 represents Velocity units at 100% output
      * 
-	 * 	                                    			  kP   	 kI    kD      kF          Iz    PeakOut */
-   public static double kP = 0.001;                        // <--, 0.001, 5, 1023.0/20660.0,  300,  1.00);
-}
+	 * 	              */                      		

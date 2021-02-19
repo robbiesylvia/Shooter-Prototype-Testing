@@ -10,7 +10,6 @@ import frc.robot.Constants;
 public class ShooterCommand extends CommandBase {
   public final Shooter shooter;
     public long startTime;
-    public double targetPercentOutput = 0.5;
 
     public ShooterCommand(Shooter shooter) {
       this.shooter = shooter;
@@ -21,26 +20,44 @@ public class ShooterCommand extends CommandBase {
     public void initialize() {
         startTime = System.currentTimeMillis();
         Constants.timesExecuted = 0;
-        shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
-
     }
   
     @Override
-    public void execute(
-      shooter.PIDControl()
-    ) 
-  }
-
+    public void execute() { 
+      shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
+      shooter.PIDControl(shooter.firstMotor, 0.75);
+     // System.out.println(encoderRate);
+      
+      /* Constants.timesExecuted += 1;
+      shooter.setVoltage();
+      double firstError = shooter.firstRPM - (shooter.firstEncoder.getRate() * 60);
+      System.out.println(shooter.firstRPM);
+      shooter.firstCurrentVoltage += firstError * Constants.kP;
+      double secondError = shooter.secondRPM - (shooter.secondEncoder.getRate() * 60);
+      shooter.secondCurrentVoltage += secondError * Constants.kP;
+      System.out.println(shooter.firstEncoder.getRate() * 60);
+      System.out.println(shooter.secondEncoder.getRate() * 60); *
+        if(Math.abs(firstError) < 20){
+            Shooter.isFirstRPMGood = true;
+        }   
+        if(Math.abs(secondError) < 20){
+            Shooter.isSecondRPMGood = true;
+        }
+        System.out.println("Executed " + Constants.timesExecuted + " times."); */
+    }
   
     @Override
     public void end(boolean interrupted) {
-      System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
+      //System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
       shooter.firstMotor.set(ControlMode.PercentOutput, 0);
     }
   
     @Override
     public boolean isFinished() {
+      /*if(Shooter.isFirstRPMGood && Shooter.isSecondRPMGood){
+        return true;
+      }else{
+        return false;*/
         return false;
     }
   }
-
