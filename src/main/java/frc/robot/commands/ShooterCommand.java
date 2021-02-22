@@ -20,12 +20,23 @@ public class ShooterCommand extends CommandBase {
     public void initialize() {
         startTime = System.currentTimeMillis();
         Constants.timesExecuted = 0;
+        shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
+        double testEncoder = shooter.firstMotor.getSelectedSensorVelocity(0);
+        System.out.println("Velocity during initialize = " + testEncoder);
     }
+    // most likely issue: getSelectedSensoryVelocity method is only compatible with TalonFX (does not show up in the TalonSRX simcollection docs, only in TalonFX) should figure out
+    // isReal method/boolean/??? to create 2 separate situations for the simulator and for reality
+
+
+    // Encoder Fix:
+    // 1) https://www.ctr-electronics.com/downloads/api/cpp/html/classctre_1_1phoenix_1_1motorcontrol_1_1_talon_s_r_x_sim_collection.html
+    // 2) https://www.chiefdelphi.com/t/simulating-a-neo-ctre-mixed-robot-using-new-wpilib-simulator/390176/13 
+    // 3) https://www.chiefdelphi.com/t/simulating-a-neo-ctre-mixed-robot-using-new-wpilib-simulator/390176/19 
   
+
     @Override
     public void execute() { 
-      shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
-      shooter.PIDControl(shooter.firstMotor, 0.75);
+      shooter.PIDControl(shooter.firstMotor, 1.0);
      // System.out.println(encoderRate);
       
       /* Constants.timesExecuted += 1;
@@ -49,7 +60,8 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
       //System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
-      shooter.firstMotor.set(ControlMode.PercentOutput, 0);
+      shooter.firstMotor.set(ControlMode.PercentOutput, 0.0);
+      System.out.println("Ending percent output =" + Shooter.currentPercentOutput);
     }
   
     @Override

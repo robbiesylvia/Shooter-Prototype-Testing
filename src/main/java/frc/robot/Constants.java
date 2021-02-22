@@ -20,7 +20,7 @@ public final class Constants {
     public static int secondEncoderPort1 = 2;
     public static int secondEncoderPort2 = 3;
     public static int timesExecuted = 0;
-	public static double kP = 1; //kP will be directly applied to the PERCENT OUTPUT of motor
+	public static double kP = 0.25; //kP will be directly applied to the PERCENT OUTPUT of motor
     //change targetVoltage manually for testing
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
