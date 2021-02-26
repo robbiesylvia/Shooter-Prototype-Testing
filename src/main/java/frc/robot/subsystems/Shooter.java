@@ -4,15 +4,29 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 //manually change the targetVoltage in Constants.java
 
 public class Shooter extends SubsystemBase {
+  public final BaseTalon firstMotor;
 
-  public BaseTalon firstMotor = new TalonSRX(Constants.talonFirstChannel);
+  public Shooter(){ 
+    if(RobotBase.isReal()){
+
+    firstMotor = new TalonFX(Constants.talonFirstChannel);
+    
+    }else{
+      System.out.println("sim activated, testing");
+    firstMotor = new TalonSRX(Constants.talonFirstChannel);
+    
+
+    }
+  }
   double currentSensorVelocity;
   double currentRPM;
   public static double currentPercentOutput;
@@ -22,9 +36,7 @@ public class Shooter extends SubsystemBase {
 
     currentRPM = (currentSensorVelocity * 10 * 60)/2048;
     // converts to RPM, 100 ms * 10 = 1 second, * 60 = 1 minute, /2048 because 2048 pulses/revolution
-    
-    currentPercentOutput = currentRPM / 6380;
-    //6380 RPM is approx. max output (does not have to be exact)
+   
 
     double errorPercentOutput = targetPercentOutput - currentPercentOutput;
     return errorPercentOutput; 
