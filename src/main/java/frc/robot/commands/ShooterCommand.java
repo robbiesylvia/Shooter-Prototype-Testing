@@ -35,6 +35,7 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void execute() { 
       shooter.PIDControl(shooter.firstMotor, 1.0);
+      shooter.hoodPIDController.calculate(shooter.getPotentiometerAngle());
      // System.out.println(encoderRate);
       
     

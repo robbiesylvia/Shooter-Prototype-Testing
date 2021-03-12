@@ -20,9 +20,6 @@ public final class Constants {
     public static int secondEncoderPort1 = 2;
     public static int secondEncoderPort2 = 3;
     public static int timesExecuted = 0;
-	public static double kP = 0.1;
-	public static double kI = 0.0001;
-	public static double kD = 0.1; 
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
@@ -49,5 +46,14 @@ public final class Constants {
 	public static int upperBoundPotentiometer = 90;
 	public static int deviceIDCANSparkMax = 0;
 
+	  // PID coefficients
+	 public static double kP = 5e-5; 
+	 public static double kI = 1e-6;
+	 public static double kD = 0; 
+	 public static double kIz = 0; 
+	 public static double kFF = 0.000156; 
+	 public static double kMaxOutput = 1; 
+	 public static double kMinOutput = -1;
+	 public static double maxRPM = 5700;
 
 }

@@ -1,5 +1,4 @@
 package frc.robot.subsystems;
-
 //import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -9,9 +8,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANPIDController;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
+
+
 
 
 //manually change the targetVoltage in Constants.java
@@ -20,13 +23,29 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 public class Shooter extends SubsystemBase {
   public final TalonFX firstMotor;
   public final CANSparkMax hoodMotor;
+  public CANPIDController hoodPIDController;
+
   
 
   public Shooter(){ 
+ 
   firstMotor = new TalonFX(Constants.talonFirstChannel);
-  hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, MotorType.kBrushless);
-  PIDController hoodMotorPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+  hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+  hoodPIDController.setReference(rotations, ControlType.kPosition);
+  //intializing + configuring hoodPIDController
+  hoodPIDController = hoodMotor.getPIDController();
 
+  hoodPIDController.setP(Constants.kP);
+  hoodPIDController.setI(Constants.kI);
+  hoodPIDController.setD(Constants.kD);
+  hoodPIDController.setIZone(Constants.kIz);
+  hoodPIDController.setFF(Constants.kFF);
+  hoodPIDController.setOutputRange(Constants.kMinOutput, Constants.kMaxOutput);
+
+
+
+  //PIDController hoodMotorPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+ 
   }
   public void hoodMotorPIDControl(){
     
