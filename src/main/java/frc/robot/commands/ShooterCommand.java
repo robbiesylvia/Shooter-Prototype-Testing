@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
@@ -16,9 +14,10 @@ public class ShooterCommand extends CommandBase {
       this.shooter = shooter;
       addRequirements(shooter);
     }
-  
+
     @Override
     public void initialize() {
+        shooter.setRPM(60);
         startTime = System.currentTimeMillis();
         Constants.timesExecuted = 0;
     }
@@ -34,9 +33,9 @@ public class ShooterCommand extends CommandBase {
 
     @Override
     public void execute() { 
-      shooter.PIDControl(shooter.firstMotor, 1.0);
-      shooter.hoodPIDController.calculate(shooter.getPotentiometerAngle());
+      //shooter.hoodPIDController.calculate(shooter.getPotentiometerAngle());
      // System.out.println(encoderRate);
+
       
     
     }
@@ -44,8 +43,6 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
       //System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
-      shooter.firstMotor.set(ControlMode.PercentOutput, 0.0);
-      System.out.println("Ending percent output =" + Shooter.currentPercentOutput);
     }
   
     @Override

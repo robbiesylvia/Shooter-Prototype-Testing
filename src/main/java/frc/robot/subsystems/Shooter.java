@@ -22,15 +22,19 @@ import com.revrobotics.CANPIDController;
 
 public class Shooter extends SubsystemBase {
   public final TalonFX firstMotor;
-  public final CANSparkMax hoodMotor;
+  public final TalonFX secondMotor;
+ // public final CANSparkMax hoodMotor;
   public CANPIDController hoodPIDController;
+
 
   
 
   public Shooter(){ 
  
   firstMotor = new TalonFX(Constants.talonFirstChannel);
-  hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+  secondMotor = new TalonFX(Constants.talonSecondChannel);
+  }
+  /*hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
   hoodPIDController.setReference(rotations, ControlType.kPosition);
   //intializing + configuring hoodPIDController
   hoodPIDController = hoodMotor.getPIDController();
@@ -40,25 +44,24 @@ public class Shooter extends SubsystemBase {
   hoodPIDController.setD(Constants.kD);
   hoodPIDController.setIZone(Constants.kIz);
   hoodPIDController.setFF(Constants.kFF);
-  hoodPIDController.setOutputRange(Constants.kMinOutput, Constants.kMaxOutput);
-
+  hoodPIDController.setOutputRange(Constants.kMinOutput, Constants.kMaxOutput);*/
 
 
   //PIDController hoodMotorPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
  
-  }
-  public void hoodMotorPIDControl(){
+ // }
+  /*public void hoodMotorPIDControl(){
     
   
   }
+*/
 
 
-
-  public AnalogPotentiometer pot = new AnalogPotentiometer(0, Constants.upperBoundPotentiometer, Constants.lowerBoundPotentiometer);
+  /*public AnalogPotentiometer pot = new AnalogPotentiometer(0, Constants.upperBoundPotentiometer, Constants.lowerBoundPotentiometer);
 
     public double getPotentiometerAngle(){
       return pot.get() * (Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer) + Constants.lowerBoundPotentiometer;
-    }
+    } */
   
 
     
@@ -70,38 +73,28 @@ public class Shooter extends SubsystemBase {
 
    //factor in gear ratio? (with wheels) ~*~
 
-  double targetVelocity;
   double currentSensorVelocity;
   double currentRPM;
-  public static double currentPercentOutput;
-  public double getVelocityError (TalonFX talonFX, double targetPercentOutput) {
-    currentSensorVelocity = talonFX.getSelectedSensorVelocity();
-    System.out.println("Current Sensory Velocity (raw output): " + currentSensorVelocity);
 
-    currentRPM = (currentSensorVelocity * 10 * 60)/2048;
-    // converts to RPM, 100 ms * 10 = 1 second, * 60 = 1 minute, /2048 because 2048 pulses/revolution
-    double errorPercentOutput = targetPercentOutput - currentPercentOutput;
-    return errorPercentOutput; 
-   }
+  //targetVelocity is in pulses/100 ms (as opposed to 2048 pulses/revoluion)
+ 
 
-   public void PIDControl (TalonFX talonFX, double targetPercentOutput) {
-     
-    double errorRPM = getVelocityError(talonFX, targetPercentOutput);
-    double gainsPercentOutput = (errorRPM) * Constants.kP;
-    double newPercentOutput = currentPercentOutput + gainsPercentOutput;
-
+    
     //failsafe
-    if (newPercentOutput > 1 || newPercentOutput < -1) {
+    /*if (newPercentOutput > 1 || newPercentOutput < -1) {
       firstMotor.set(ControlMode.PercentOutput, 0);
       System.out.println("Failsafe activated because percent output was set to a value greater than 1 or less than -1. Something is not right here!");
 
-    }else{
+     ** cert statement **
+
+    }else{*/
+  public void setRPM (double targetRPM){
+    double targetVelocity = targetRPM * 2048 / 600;
     firstMotor.set(ControlMode.Velocity, targetVelocity);
-    currentPercentOutput = newPercentOutput; 
-    System.out.println("Current RPM =" + currentPercentOutput);
-    }
-   } 
- }  
+    secondMotor.follow(firstMotor);
+    System.out.println("Current RPM =" + currentRPM);
+  } 
+}
  
  
  

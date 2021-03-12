@@ -13,12 +13,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static int talonFirstChannel = 0;
-    public static int talonSecondChannel = 1;
-    public static int firstEncoderPort1 = 0;
-    public static int firstEncoderPort2 = 1;
-    public static int secondEncoderPort1 = 2;
-    public static int secondEncoderPort2 = 3;
+    public static int talonFirstChannel = 13;
+    public static int talonSecondChannel = 14;
     public static int timesExecuted = 0;
 
 	/**
