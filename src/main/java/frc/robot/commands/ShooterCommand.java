@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.Constants;
@@ -17,7 +19,7 @@ public class ShooterCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setRPM(60);
+        
         startTime = System.currentTimeMillis();
         Constants.timesExecuted = 0;
     }
@@ -35,9 +37,10 @@ public class ShooterCommand extends CommandBase {
     public void execute() { 
       //shooter.hoodPIDController.calculate(shooter.getPotentiometerAngle());
      // System.out.println(encoderRate);
-
-      
-    
+     shooter.setRPM(60);
+     shooter.firstMotor.set(ControlMode.PercentOutput, 0.1);
+    shooter.secondMotor.set(ControlMode.PercentOutput, 0.1);
+    System.out.println("reached execute");
     }
   
     @Override
