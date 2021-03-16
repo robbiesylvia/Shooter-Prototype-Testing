@@ -1,11 +1,14 @@
 package frc.robot.subsystems;
+
 //import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -23,6 +26,8 @@ import com.revrobotics.CANPIDController;
 public class Shooter extends SubsystemBase {
   public final TalonFX firstMotor;
   public final TalonFX secondMotor;
+
+ 
  // public final CANSparkMax hoodMotor;
   public CANPIDController hoodPIDController;
 
@@ -30,9 +35,13 @@ public class Shooter extends SubsystemBase {
   
 
   public Shooter(){ 
- 
+
   firstMotor = new TalonFX(Constants.talonFirstChannel);
   secondMotor = new TalonFX(Constants.talonSecondChannel);
+  secondMotor.follow(firstMotor);
+  secondMotor.setInverted(true);
+
+    
   }
   /*hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
   hoodPIDController.setReference(rotations, ControlType.kPosition);
@@ -89,10 +98,16 @@ public class Shooter extends SubsystemBase {
 
     }else{*/
   public void setRPM (double targetRPM){
-    double targetVelocity = targetRPM * 2048 / 600;
-    firstMotor.set(ControlMode.Velocity, targetVelocity);
-    secondMotor.follow(firstMotor);
-    System.out.println("Current RPM =" + currentRPM);
+    double targetVelocity = (targetRPM * 2048) / 600;
+    
+    firstMotor.set(TalonFXControlMode.Velocity, targetVelocity);
+ 
+
+    	/* Configured for Velocity Closed Loop on Integrated Sensors' Sum and Arbitrary FeedForward on joyX */
+			
+			/* Uncomment to view RPM in Driver Station */
+            // double actual_RPM = (_rightMaster.getSelectedSensorVelocity() / (double)Constants.kSensorUnitsPerRotation * 600f);
+            // System.out.println("Vel[RPM]: " + actual_RPM + " Pos: " + _rightMaster.getSelectedSensorPosition());
   } 
 }
  

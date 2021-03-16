@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.commands.ShooterCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -39,13 +40,23 @@ public class Robot extends TimedRobot {
     
     m_robotContainer = new RobotContainer();
       /* Factory Default all hardware to prevent unexpected behaviour */
-		talonFX.configFactoryDefault();
+      ShooterCommand.shooter.firstMotor.configFactoryDefault();
 		
 		/* Config neutral deadband to be the smallest possible */
-		talonFX.configNeutralDeadband(0.001);
-    talonFX.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-      talonFX.config_kP(Constants.kPIDLoopIdx, Constants.kP, Constants.kTimeoutMs);
-  }
+		ShooterCommand.shooter.firstMotor.configNeutralDeadband(0.001);
+    ShooterCommand.shooter.firstMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+   
+   
+  ShooterCommand.shooter.firstMotor.config_kP(Constants.kPIDLoopIdx, Constants.kP, Constants.kTimeoutMs);
+  ShooterCommand.shooter.firstMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+	ShooterCommand.shooter.firstMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+  ShooterCommand.shooter.firstMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+  ShooterCommand.shooter.firstMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+  
+  ShooterCommand.shooter.secondMotor.follow(ShooterCommand.shooter.firstMotor);
+  ShooterCommand.shooter.secondMotor.setInverted(true);
+
+}
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
