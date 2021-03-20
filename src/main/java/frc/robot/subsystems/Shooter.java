@@ -47,7 +47,7 @@ public PIDController hoodPIDController;
   hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
 
   //intializing + configuring hoodPIDController
-    hoodPIDController = new PIDController(Constants.hoodkP, Constants.kI, Constants.kD);
+    hoodPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
  
 }
   public void hoodMotorPIDControl(){
@@ -63,22 +63,18 @@ public PIDController hoodPIDController;
     }
   
   public void setAngle(double targetAngle){
-    
     hoodPIDController.setSetpoint(targetAngle);
     hoodMotor.set(hoodPIDController.calculate(getPotentiometerAngle()));
     if(calculateError() < 1.5){
       hoodMotor.disable();
     }
-
   }
 
   public double calculateError(){
     return(Math.abs(hoodPIDController.getSetpoint() - getPotentiometerAngle()));
   }
 
-    
   
-    
   /*targetVelocity is in units/100ms and the integrated encoder is based on 2048 units/revolution, so to convert from targetRPM to targetVelocity, 
    *(targetRPM) / ((100ms per 1 second = 10) (sec per min = 60)) 
    */
@@ -88,21 +84,14 @@ public PIDController hoodPIDController;
   double currentSensorVelocity;
   double currentRPM;
 
-  //targetVelocity is in pulses/100 ms (as opposed to 2048 pulses/revoluion)
- 
+  //targetVelocity is in pulses/100 ms (as opposed to 2048 pulses/revoluion)a
+   
+     // cert statement could function as a failsafe if necessary
 
-    
-    //failsafe
-    /*if (newPercentOutput > 1 || newPercentOutput < -1) {
-      firstMotor.set(ControlMode.PercentOutput, 0);
-      System.out.println("Failsafe activated because percent output was set to a value greater than 1 or less than -1. Something is not right here!");
-
-     ** cert statement **
-
-    }else{*/
+  
   public void setRPM (double targetRPM){
     double targetVelocity = (targetRPM * 2048) / 600;
-    
+    System.out.println("Target Velocity:" + targetVelocity);
     firstMotor.set(TalonFXControlMode.Velocity, targetVelocity);
  
 
@@ -113,10 +102,3 @@ public PIDController hoodPIDController;
             // System.out.println("Vel[RPM]: " + actual_RPM + " Pos: " + _rightMaster.getSelectedSensorPosition());
   } 
 }
- 
- 
- 
- // WPI_TalonFX --- helpful for velocity control etc.? ,..... also be aware of phoenix code, they say 2000 but use 500 for dimensional analysis of velocity stuff
-
-  //use motion magic to achieve desired velocity, then use velocity closed loop to maintain velocity
-  

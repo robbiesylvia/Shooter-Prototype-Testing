@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     
+    
     m_robotContainer = new RobotContainer();
       /* Factory Default all hardware to prevent unexpected behaviour */
       ShooterCommand.shooter.firstMotor.configFactoryDefault();
@@ -47,7 +48,6 @@ public class Robot extends TimedRobot {
     ShooterCommand.shooter.firstMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
    
    
-  ShooterCommand.shooter.firstMotor.config_kP(Constants.kPIDLoopIdx, Constants.kP, Constants.kTimeoutMs);
   ShooterCommand.shooter.firstMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
 	ShooterCommand.shooter.firstMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
   ShooterCommand.shooter.firstMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);

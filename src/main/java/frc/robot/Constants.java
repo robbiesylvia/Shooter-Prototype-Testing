@@ -43,22 +43,21 @@ public final class Constants {
 	public static int upperBoundPotentiometer = 90;
 
 	//for hoodMotor
-	public static int deviceIDCANSparkMax = 19;
+	public static int deviceIDCANSparkMax = 15;
 
 
 
 	  // PID coefficients
-	 public static double hoodkP = 5e-5; 
+	 public static double kP = 5e-5; 
 	 public static double kI = 1e-6;
 	 public static double kD = 0; 
 	 public static double kIz = 0; 
-	 public static double kFF = 0.000156; 
+	 public static double kFF = (1023 * 0.5) / 9400.0;
 	 public static double kMaxOutput = 1; 
 	 public static double kMinOutput = -1;
 	 public static double maxRPM = 5700; 
 	 //
 	 
-	 public static double kP = 0.05;
-	 	//							kP   kI   kD   kF               Iz    PeakOut */
-	 public final static Gains kGains_Velocit  = new Gains( 0.05, 0.001, 5, 1023.0/20660.0,  300,  1.00);
+	 	//													kP   kI   kD   kF               Iz    PeakOut */
+	 public final static Gains kGains_Velocit  = new Gains(0.65, 0.0000205, 0.0, (1023 * 0.5) / 9400.0,  300,  1.00);
 }
