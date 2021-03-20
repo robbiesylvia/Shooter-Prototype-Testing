@@ -14,7 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANPIDController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 
 
 
@@ -27,11 +27,12 @@ public class Shooter extends SubsystemBase {
   public final TalonFX firstMotor;
   public final TalonFX secondMotor;
 
+
  
- // public final CANSparkMax hoodMotor;
-  public CANPIDController hoodPIDController;
+ public final CANSparkMax hoodMotor;
 
 
+public PIDController hoodPIDController;
   
 
   public Shooter(){ 
@@ -40,38 +41,40 @@ public class Shooter extends SubsystemBase {
   secondMotor = new TalonFX(Constants.talonSecondChannel);
   secondMotor.follow(firstMotor);
   secondMotor.setInverted(true);
-
-    
-  }
-  /*hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
-  hoodPIDController.setReference(rotations, ControlType.kPosition);
-  //intializing + configuring hoodPIDController
-  hoodPIDController = hoodMotor.getPIDController();
-
-  hoodPIDController.setP(Constants.kP);
-  hoodPIDController.setI(Constants.kI);
-  hoodPIDController.setD(Constants.kD);
-  hoodPIDController.setIZone(Constants.kIz);
-  hoodPIDController.setFF(Constants.kFF);
-  hoodPIDController.setOutputRange(Constants.kMinOutput, Constants.kMaxOutput);*/
-
-
-  //PIDController hoodMotorPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
- 
- // }
-  /*public void hoodMotorPIDControl(){
-    
   
+  // 
+  
+  hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+  //intializing + configuring hoodPIDController
+    hoodPIDController = new PIDController(Constants.hoodkP, Constants.kI, Constants.kD);
+ 
+}
+  public void hoodMotorPIDControl(){
+    
   }
-*/
 
 
-  /*public AnalogPotentiometer pot = new AnalogPotentiometer(0, Constants.upperBoundPotentiometer, Constants.lowerBoundPotentiometer);
+
+  public AnalogPotentiometer potentiometer = new AnalogPotentiometer(0, Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer, 0);
 
     public double getPotentiometerAngle(){
-      return pot.get() * (Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer) + Constants.lowerBoundPotentiometer;
-    } */
+      return potentiometer.get(); //* (Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer) + Constants.lowerBoundPotentiometer;
+    }
   
+  public void setAngle(double targetAngle){
+    
+    hoodPIDController.setSetpoint(targetAngle);
+    hoodMotor.set(hoodPIDController.calculate(getPotentiometerAngle()));
+    if(calculateError() < 1.5){
+      hoodMotor.disable();
+    }
+
+  }
+
+  public double calculateError(){
+    return(Math.abs(hoodPIDController.getSetpoint() - getPotentiometerAngle()));
+  }
 
     
   

@@ -36,24 +36,27 @@ public final class Constants {
 	 */
     public static final int kTimeoutMs = 0;
 
-	
+	//min possible angle of the hood
 	public static int lowerBoundPotentiometer = 32;
 
+	//max possible angle of the hood
 	public static int upperBoundPotentiometer = 90;
-	public static int deviceIDCANSparkMax = 0;
+
+	//for hoodMotor
+	public static int deviceIDCANSparkMax = 19;
 
 
 
 	  // PID coefficients
-	 /*public static double kP = 5e-5; 
+	 public static double hoodkP = 5e-5; 
 	 public static double kI = 1e-6;
 	 public static double kD = 0; 
 	 public static double kIz = 0; 
 	 public static double kFF = 0.000156; 
 	 public static double kMaxOutput = 1; 
 	 public static double kMinOutput = -1;
-	 public static double maxRPM = 5700; */
-	 //	
+	 public static double maxRPM = 5700; 
+	 //
 	 
 	 public static double kP = 0.05;
 	 	//							kP   kI   kD   kF               Iz    PeakOut */

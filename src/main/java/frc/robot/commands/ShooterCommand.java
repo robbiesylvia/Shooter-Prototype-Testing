@@ -26,8 +26,9 @@ public class ShooterCommand extends CommandBase {
         
         startTime = System.currentTimeMillis();
         Constants.timesExecuted = 0;
+       //shooter.hoodMotor.set(0.1);
 
-        shooter.setRPM(2000);
+       shooter.setRPM(1000);
     }
     // most likely issue: getSelectedSensoryVelocity method is only compatible with TalonFX (does not show up in the TalonSRX simcollection docs, only in TalonFX) should figure out
     // isReal method/boolean/??? to create 2 separate situations for the simulator and for reality
@@ -41,8 +42,13 @@ public class ShooterCommand extends CommandBase {
 
     @Override
     public void execute() { 
-      //shooter.hoodPIDController.calculate(shooter.getPotentiometerAngle());
-     // System.out.println(encoderRate);
+    
+     // shooter.setAngle(50);
+      //System.out.println("Potentiometer Angle:" + shooter.getPotentiometerAngle());
+    
+
+    
+    // System.out.println(encoderRate);
 
 
     
@@ -61,21 +67,19 @@ public class ShooterCommand extends CommandBase {
 
    // shooter.firstMotor.set(ControlMode.PercentOutput, 0.5);
   // shooter.secondMotor.set(ControlMode.PercentOutput, 0.5);
-  System.out.println(shooter.firstMotor.getSelectedSensorVelocity() * (1.0/2048.0) * 600.0);
+
+System.out.println(shooter.firstMotor.getSelectedSensorVelocity() * (1.0/2048.0) * 600.0);
     }
   
     @Override
     public void end(boolean interrupted) {
       //System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
-     shooter.firstMotor.set(ControlMode.Disabled, 0);
+    shooter.firstMotor.set(ControlMode.Disabled, 0);
     }
   
     @Override
     public boolean isFinished() {
-      /*if(Shooter.isFirstRPMGood && Shooter.isSecondRPMGood){
-        return true;
-      }else{
-        return false;*/
+     
         return false;
     }
   }
