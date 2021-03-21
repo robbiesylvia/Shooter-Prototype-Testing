@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.subsystems.CircleThingy;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,6 +45,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(controller, Button.kX.value)
       .toggleWhenPressed(new ShooterCommand(shooter));
+    new JoystickButton(controller, Button.kB.value)
+      .whileHeld(() -> CircleThingy.spinUp(0.2));
   }
 
 
