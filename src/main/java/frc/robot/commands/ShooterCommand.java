@@ -15,6 +15,7 @@ public class ShooterCommand extends CommandBase {
   public long startTime;
   public int threeSecondCount;
   public int increaseRPM;
+  public double targetRPM;
 
   public ShooterCommand(Shooter shooter) {
     ShooterCommand.shooter = shooter;
@@ -28,7 +29,7 @@ public class ShooterCommand extends CommandBase {
         Constants.timesExecuted = 0;
        //shooter.hoodMotor.set(0.1);
 
-       shooter.setRPM(2000);
+       shooter.setRPM(4350);
 
        //2000 rpm = 
     }

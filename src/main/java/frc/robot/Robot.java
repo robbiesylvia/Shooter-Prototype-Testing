@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -53,6 +54,14 @@ public class Robot extends TimedRobot {
   ShooterCommand.shooter.firstMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
   ShooterCommand.shooter.firstMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
   
+  ShooterCommand.shooter.firstMotor.configNominalOutputForward(0, 20);
+  ShooterCommand.shooter.firstMotor.configNominalOutputReverse(0, 20);
+
+  ShooterCommand.shooter.firstMotor.configPeakOutputForward(1, 20);
+  ShooterCommand.shooter.firstMotor.configPeakOutputReverse(-1, 20);
+
+  ShooterCommand.shooter.firstMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 10, 0.5));
+
   ShooterCommand.shooter.secondMotor.follow(ShooterCommand.shooter.firstMotor);
   ShooterCommand.shooter.secondMotor.setInverted(true);
 
@@ -121,3 +130,10 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 }
+
+
+
+
+
+
+

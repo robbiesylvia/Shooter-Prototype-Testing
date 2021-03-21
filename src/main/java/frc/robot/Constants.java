@@ -61,3 +61,22 @@ public final class Constants {
 	 	//													kP   kI   kD   kF               Iz    PeakOut */
 	 public final static Gains kGains_Velocit  = new Gains(0.65, 0.0000205, 0.0, (1023 * 0.5) / 9400.0,  300,  1.00);
 }
+
+
+
+
+/* Shooter Empirical Testing:
+hood angle: fully extended
+
+6m: ~4300 (50% accuracy into back port)
+
+5m: ~4675 ????
+
+3m:
+
+2m:
+
+
+
+
+*/

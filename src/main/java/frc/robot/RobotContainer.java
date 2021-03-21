@@ -44,6 +44,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(controller, Button.kX.value)
       .toggleWhenPressed(new ShooterCommand(shooter));
+    new JoystickButton(controller, Button.kY.value)
+      .whenPressed(() -> shooter.increaseRPM(50));
+    new JoystickButton(controller, Button.kA.value)
+      .whenPressed(() -> shooter.decreaseRPM(50));
+    
   }
 
 

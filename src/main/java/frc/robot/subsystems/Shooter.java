@@ -82,7 +82,7 @@ public PIDController hoodPIDController;
    //factor in gear ratio? (with wheels) ~*~
 
   double currentSensorVelocity;
-  double currentRPM;
+  double currentSetPoint;
 
   //targetVelocity is in pulses/100 ms (as opposed to 2048 pulses/revoluion)a
    
@@ -91,14 +91,21 @@ public PIDController hoodPIDController;
   
   public void setRPM (double targetRPM){
     double targetVelocity = (targetRPM * 2048) / 600;
+    currentSetPoint = targetRPM;
     System.out.println("Target Velocity:" + targetVelocity);
     firstMotor.set(TalonFXControlMode.Velocity, targetVelocity);
- 
+  }
 
     	/* Configured for Velocity Closed Loop on Integrated Sensors' Sum and Arbitrary FeedForward on joyX */
 			
 			/* Uncomment to view RPM in Driver Station */
             // double actual_RPM = (_rightMaster.getSelectedSensorVelocity() / (double)Constants.kSensorUnitsPerRotation * 600f);
             // System.out.println("Vel[RPM]: " + actual_RPM + " Pos: " + _rightMaster.getSelectedSensorPosition());
-  } 
+  
+  public void increaseRPM (int increment){
+    setRPM(currentSetPoint + increment);
+  }
+  public void decreaseRPM (int decrement){
+    setRPM(currentSetPoint - decrement);
+  }
 }
