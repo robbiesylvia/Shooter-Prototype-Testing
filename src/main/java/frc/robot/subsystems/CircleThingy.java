@@ -1,12 +1,17 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.robot.Constants;
+
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-public class CircleThingy {
-    public static VictorSPX circleMoVictorSPX = new VictorSPX(11);
 
-    public static void spinUp(double percentage) {
-        circleMoVictorSPX.set(ControlMode.PercentOutput, percentage);
-    }
+
+//Circle Thingy = routing carosel purple wheel for moving balls
+public class CircleThingy {
+    public VictorSPX circleMotorVictorSPX = new VictorSPX(Constants.circleThingyVictorID);
+
+    /*public void spinUp(double percentage) {
+        
+
+    }*/
 }

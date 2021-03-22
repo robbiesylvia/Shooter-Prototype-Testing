@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -29,14 +28,14 @@ public class ShooterCommand extends CommandBase {
         Constants.timesExecuted = 0;
        //shooter.hoodMotor.set(0.1);
 
-       shooter.setRPM(4350);
+       //shooter.setRPM(4000);
 
        //2000 rpm = 
     }
 
     @Override
     public void execute() { 
-     // shooter.setAngle(50);
+     shooter.setAngle(45);
       //System.out.println("Potentiometer Angle:" + shooter.getPotentiometerAngle());
     
      // shooter.firstMotor.set(TalonFXControlMode.PercentOutput, 0.5);
@@ -57,7 +56,7 @@ System.out.println(shooter.firstMotor.getSelectedSensorVelocity() * (1.0/2048.0)
     @Override
     public void end(boolean interrupted) {
       //System.out.println("Time to reach RPM: " + (System.currentTimeMillis() - startTime));
-    shooter.firstMotor.set(ControlMode.Disabled, 0);
+    shooter.firstMotor.set(TalonFXControlMode.Disabled, 0);
     }
   
     @Override

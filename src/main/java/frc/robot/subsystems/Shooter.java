@@ -6,6 +6,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -39,38 +40,71 @@ public PIDController hoodPIDController;
 
   firstMotor = new TalonFX(Constants.talonFirstChannel);
   secondMotor = new TalonFX(Constants.talonSecondChannel);
-  secondMotor.follow(firstMotor);
-  secondMotor.setInverted(true);
   
-  // 
+
+  //configuring TalonFX motors 
+   /* Factory Default all hardware to prevent unexpected behaviour */
+   firstMotor.configFactoryDefault();
+		
+   /* Config neutral deadband to be the smallest possible */
+   firstMotor.configNeutralDeadband(0.001);
+   firstMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+  
+  
+ firstMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+ firstMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+ firstMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+ firstMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+ 
+ firstMotor.configNominalOutputForward(0, 20);
+ firstMotor.configNominalOutputReverse(0, 20);
+
+ firstMotor.configPeakOutputForward(1, 20);
+ firstMotor.configPeakOutputReverse(-1, 20);
+
+ firstMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 10, 0.5));
+
+ secondMotor.follow(firstMotor);
+ secondMotor.setInverted(true);
+
+  
+  
+
+  // canSparkMAX for controlling hood angle
   
   hoodMotor = new CANSparkMax(Constants.deviceIDCANSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
 
   //intializing + configuring hoodPIDController
     hoodPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
- 
-}
-  public void hoodMotorPIDControl(){
-    
   }
 
 
-
-  public AnalogPotentiometer potentiometer = new AnalogPotentiometer(0, Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer, 0);
+  public AnalogPotentiometer potentiometer = new AnalogPotentiometer(Constants.hoodAnglePotentiometerAnalogInputID, Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer, 0);
 
     public double getPotentiometerAngle(){
       return potentiometer.get(); //* (Constants.upperBoundPotentiometer - Constants.lowerBoundPotentiometer) + Constants.lowerBoundPotentiometer;
     }
   
+  //setAngle should be called periodically in order for PID control to occur
   public void setAngle(double targetAngle){
     hoodPIDController.setSetpoint(targetAngle);
-    hoodMotor.set(hoodPIDController.calculate(getPotentiometerAngle()));
-    if(calculateError() < 1.5){
+    double hoodMotorSpeed = hoodPIDController.calculate(getPotentiometerAngle());
+
+    //hoodMotor should not exceed 10% output, so this prevents it from exceeding 8% (to be safe)
+    if (hoodMotorSpeed > 0.08 || hoodMotorSpeed < -0.08) {
+      if(hoodMotorSpeed > 0) {
+        hoodMotorSpeed = 0.08;
+      }else{
+        hoodMotorSpeed = -0.08;
+      }
+    }
+    hoodMotor.set(hoodMotorSpeed);
+    if(calculateAngleError() < 1.5){
       hoodMotor.disable();
     }
   }
 
-  public double calculateError(){
+  public double calculateAngleError(){
     return(Math.abs(hoodPIDController.getSetpoint() - getPotentiometerAngle()));
   }
 

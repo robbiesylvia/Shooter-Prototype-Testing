@@ -14,6 +14,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.SpinCircleThingy;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,6 +30,7 @@ public class RobotContainer {
   private final XboxController controller = new XboxController(0);
   private final Shooter shooter = new Shooter();
   public static boolean isButtonToggled = false;
+  private final CircleThingy circleThingy = new CircleThingy();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -50,7 +52,7 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kA.value)
       .whenPressed(() -> shooter.decreaseRPM(50));
     new JoystickButton(controller, Button.kB.value)
-      .whileHeld(() -> CircleThingy.spinUp(0.2));
+      .whileHeld(new SpinCircleThingy(circleThingy));
   }
 
 

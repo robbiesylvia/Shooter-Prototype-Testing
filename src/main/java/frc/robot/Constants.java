@@ -15,7 +15,9 @@ package frc.robot;
 public final class Constants {
     public static int talonFirstChannel = 13;
     public static int talonSecondChannel = 14;
-    public static int timesExecuted = 0;
+	public static int timesExecuted = 0;
+	public static int circleThingyVictorID = 11;
+	public static int hoodAnglePotentiometerAnalogInputID = 0;
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
